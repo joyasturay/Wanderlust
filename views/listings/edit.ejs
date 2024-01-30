@@ -1,32 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wanderlust</title>
-</head>
-<body>
+<%layout ("/layouts/boilerplate")%>
+    <div class="row mt-3">
+        <div class="col-8 offset-2">
+        
     <h3>Edit Listing</h3>
     <form method="POST" action="/listings/<%=listing._id%>?_method=PUT">
-        <input name="listing[title]" type="text" value="<%=listing.title%>">
-        <br />
-        <br />
-        <input name="listing[description]" type="text" value="<%=listing.description%>">
-        <br />
-        <br />
-        <input name="listing[price]" type="number" value="<%=listing.price%>">
-        <br />
-        <br />
-        <input name="listing[image]" type="text" value="<%=listing.image%>">
-        <br />
-        <br />
-        <input name="listing[location]" type="text" value="<%=listing.location%>">
-        <br />
-        <br />
-        <input name="listing[country]" type="text" value="<%=listing.country%>">
-        <br />
-        <br />
-        <button>Submit</button>
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="listing[title]" type="text" placeholder="<%=listing.title%>" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" type="text" class="form-control"><%=listing.description%></textarea>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-4">
+                <label for="price" class="form-label">Price</label>
+                <input name="listing[price]" type="number" placeholder="<%=listing.price%>" class="form-control">
+            </div>
+
+            <div class="mb-3 col-md-8">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" type="text" placeholder="<%=listing.country%>" class="form-control">
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input name="listing[image]" type="text" placeholder="<%=listing.image%>" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">location</label>
+            <input name="listing[location]" type="text" placeholder="<%=listing.location%>" class="form-control">
+        </div>
+        
+        
+        <button class="btn btn-dark edit-btn mt-3">Submit</button>
     </form>
-</body>
-</html>
+</div>
+    </div>
