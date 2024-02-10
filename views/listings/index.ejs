@@ -2,11 +2,10 @@
     <h3>All listings</h3>
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
         <%for(let listing of allListings){%>
-            <div class="col ">
             <a href="/listings/<%=listing._id%>" style="text-decoration:none">
            
-            <div class="card">
-                <img src="<%=listing.image%>" class="card-img-top" alt="listing_image" style="height:20rem">
+            <div class="card listing-card">
+                <img src="<%=listing.image%>" class="card-img-top" alt="listing_image" style="height:250px">
                 <div class="card-img-overlay">Wanderlust</div>
                 <div class="card-body">
                     <p class="card-title"><b><%=listing.title%></b></p>
@@ -14,7 +13,7 @@
                 </div>
             </div>
             </a>
-            </div>
+            
         <%}%>
-
+        
     </div>

@@ -7,6 +7,8 @@ const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const Expresserror=require("./utils/Expresserror.js");
 const {listingSchema}=require("./schema.js");
+const Review=require("./models/review.js");
+const {reviewSchema}=require("./schema.js");
 var methodOverride = require('method-override');
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -22,7 +24,16 @@ const validateListing=(req,res,next)=>{
     }else{
         next();
     }
-}
+};
+const validateReview=(req,res,next)=>{
+    let {error}=reviewSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map(el => el.message).join(',');
+        throw new Expresserror(400,errMsg);
+    }else{
+        next();
+    }
+};
 const Mongo_url="mongodb://127.0.0.1:27017/wanderlust";
 
 main().then(() => {
@@ -55,7 +66,7 @@ app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{
    
 }));
 //update route
-app.get("/listings/:id/edit",validateListing,wrapAsync(async (req,res)=>{
+app.get("/listings/:id/edit",wrapAsync(async (req,res)=>{
     let {id}=req.params;
     const listing= await Listing.findById(id);
     res.render("listings/edit.ejs",{listing});
@@ -71,10 +82,27 @@ app.delete("/listings/:id",wrapAsync(async (req,res)=>{
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+//Review
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async (req,res)=>{
+    let listing=await Listing.findById(req.params.id);
+    let newReview=new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${req.params.id}`);
+})
+);
+//Delete review route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async (req,res)=>{
+    let {id,reviewId}=req.params;
+    await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
+}));
 //show route
 app.get("/listings/:id",wrapAsync(async (req,res)=>{
     let {id}=req.params;
-  const listing= await Listing.findById(id);
+  const listing= await Listing.findById(id).populate("reviews");
   res.render("./listings/show.ejs",{listing});
 }));
 app.all("*",(req,res,next)=>{
