@@ -23,7 +23,7 @@ const listingSchema=new Schema({
     }],
 });
 listingSchema.post("findOneAndDelete",async function(listing){
-    if(listing.reviews){
+    if(listing){
         const reviews=await Review.deleteMany({_id:{$in:listing.reviews}});
         console.log(reviews);
     }
