@@ -4,10 +4,14 @@ const mongoose=require("mongoose");
 const path=require("path");
 const ejsMate=require("ejs-mate");
 const Expresserror=require("./utils/Expresserror.js");
-const listings=require("./routes/listings.js");
-const reviews=require("./routes/review.js");
+const listingRouter=require("./routes/listings.js");
+const reviewRouter=require("./routes/review.js");
+const userRouter=require("./routes/user.js");
 const session=require("express-session");
 const flash=require("connect-flash");
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user.js");
 var methodOverride = require('method-override');
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -27,14 +31,22 @@ const expressSession={
 };
 app.use(session(expressSession));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
+  res.locals.currUser=req.user;
   next();
 })
 
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",reviews);
+app.use("/listings",listingRouter);
+app.use("/listings/:id/reviews",reviewRouter);
+app.use("/",userRouter);
 const Mongo_url="mongodb://127.0.0.1:27017/wanderlust";
 
 main().then(() => {
