@@ -154,3 +154,12 @@ min-height:100vw;
     width: 120%;
     border: none;
 }
+#map{
+    height:400px;
+    width:50vw;
+}
+.airbnbhome:hover{
+    background-color:aliceblue !important;
+    border-radius:20px !important;
+    color:#fe424d !important;
+}
