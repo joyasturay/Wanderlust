@@ -1,6 +1,6 @@
 **#PROJECT-WANDERLUST**
 This project was created from a local system .It is a MERN stack project.The idea behind this project is to list different hotels from different cities around the world so that you can see the different hotels for your vacation.
-**#Frontend**
+**##Frontend**
 HTML5 / CSS3 / JAVASCRIPT
 **#Backend**
 1.NODE.JS
