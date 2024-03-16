@@ -16,7 +16,7 @@ HTML5 / CSS3 / JavaScript
 1. BOOTSTRAP 
 
 # Others 
-This project has implementation of MVC framework and REST APIs. 
+This project has implementation of MVC framework and REST APIs and EJS. 
 
 # Features 
 1. A user can create a new listing 
